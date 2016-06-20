@@ -30,7 +30,7 @@
     *
     */
     public $utils;
-    
+
     /**
      * 初始化，判断此次请求是否为验证请求，并以数组形式保存
      *
@@ -38,6 +38,7 @@
      * @param boolean $debug 调试模式，默认为关闭
      */
     public function __construct($token, $debug = FALSE) {
+      var_dump($_GET['echostr']);
       if ($this->isValid() && $this->validateSignature($token)) {
         exit($_GET['echostr']);
       }
@@ -123,12 +124,12 @@
      * @return void
      */
     protected function onMenuClick(){}
- 
+
      /**
      * 用户点击按钮View时触发，用于子类重写
      *
      * @return void
-     */   
+     */
     protected function onMenuView(){}
 
     /**
