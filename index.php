@@ -1,7 +1,7 @@
 <?php
 
   include_once('./libs/WeChat.php');
-  
+
   class MyWechat extends Wechat {
 
     /**
@@ -10,11 +10,11 @@
      * @return void
      */
     protected function onSubscribe() {
-      $BackMsg = '欢迎您关注瑰族，要知道，吃，是一种态度。';
+      $BackMsg = 'Welcome, here is solitude.';
       $this->mysql->saveIntoUser($this->getRequest('ToUserName'),$this->getRequest('FromUserName'),
                                          $this->getRequest('CreateTime'),$this->getRequest('MsgType'),
                                          $this->getRequest('Event'),$BackMsg);
-      $this->responseText($BackMsg);     
+      $this->responseText($BackMsg);
     }
 
     /**
@@ -85,12 +85,12 @@
      *
      * @return voi
      */
-    protected function onImage() {     
+    protected function onImage() {
       $picurl = $this->getRequest('PicUrl');
       $saveurl = time().'.png';
       $s = new SaeStorage();
       $img = file_get_contents($picurl);  //括号中的为远程"\"#FF0000\"">图片地址
-      $storage_url = $s->write('pictures' ,$saveurl , $img);  
+      $storage_url = $s->write('pictures' ,$saveurl , $img);
       $BackMsg = "感谢您提供的图片。";
       $this->mysql->saveIntoPic($this->getRequest('ToUserName'),$this->getRequest('FromUserName'),$this->getRequest('CreateTime'),
                                 $this->getRequest('MsgType'),$this->getRequest('PicUrl'),$this->getRequest('MediaId'),$this->getRequest('MsgId'),$storage_url,
@@ -163,5 +163,5 @@
 
   }
 
-  $wechat = new MyWechat('saymagic',true);
+  $wechat = new MyWechat('solitudeandsecretlife',true);
   $wechat->run();
