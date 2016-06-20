@@ -82,7 +82,7 @@
       $nonce = $_GET['nonce'];
 
       $signatureArray = array($token, $timestamp, $nonce);
-      sort($signatureArray);
+      sort($signatureArray, SORT_STRING);
 
       return sha1(implode($signatureArray)) == $signature;
     }
