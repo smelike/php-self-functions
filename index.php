@@ -163,5 +163,5 @@
 
   }
 
-  $wechat = new MyWechat('solitudeandsecretlife',true);
+  $wechat = new MyWechat('jamesxu',true);
   $wechat->run();
