@@ -38,10 +38,7 @@
      * @param boolean $debug 调试模式，默认为关闭
      */
     public function __construct($token, $debug = FALSE) {
-      var_dump($_REQUEST);
-      return $this->validateSignature($token);
-      //exit;
-      //var_dump($_GET['echostr']);
+      
       if ($this->isValid() && $this->validateSignature($token)) {
         exit($_GET['echostr']);
       }
