@@ -10,16 +10,16 @@ class WX_FUNCTIONS
     *
     */
     public function tuling($reqInfo){
-      $apiKey = "2d6672ad4f23c2f29c87e63ecfa323dc"; 
+      $apiKey = "2d6672ad4f23c2f29c87e63ecfa323dc";
       $apiURL = "http://www.tuling123.com/openapi/api?key=KEY&info=INFO";
 
-      // 设置报文头, 构建请求报文 
-        // header("Content-type: text/html; charset=utf-8"); 
-      $url = str_replace("INFO", $reqInfo, str_replace("KEY", $apiKey, $apiURL)); 
+      // 设置报文头, 构建请求报文
+        // header("Content-type: text/html; charset=utf-8");
+      $url = str_replace("INFO", $reqInfo, str_replace("KEY", $apiKey, $apiURL));
 
-      $res =file_get_contents($url); 
+      $res =file_get_contents($url);
       $text = json_decode($res)->{'text'};
-      return $text; 
+      return $text;
     }
 
     public function getCSWeather(){
@@ -43,14 +43,14 @@ class WX_FUNCTIONS
             }
 
         }
-        return trim($arrMsg[45].$arrMsg[46]); 
+        return trim($arrMsg[45].$arrMsg[46]);
     }
 
-    
+
     public function getAccessToken(){
         //更换成自己的APPID和APPSECRET, 需在微信公众平台后台的开发者中心界面获取
-        $APPID="********";
-        $APPSECRET="*******";
+        $APPID="wx156ea01a73c66813";
+        $APPSECRET="f7e17ed683a44c5d98a251952d383cc4";
 
         $TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$APPID."&secret=".$APPSECRET;
 
@@ -60,7 +60,7 @@ class WX_FUNCTIONS
         return $result->access_token;
     }
 
-       
+
 
 }
 
