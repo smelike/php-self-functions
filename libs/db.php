@@ -1,7 +1,7 @@
 <?php
 //更换为自己的数据
 $hostname = 'w.rdc.sae.sina.com.cn';
-$dbuser =  ' jjnww012w5';
+$dbuser =  'jjnww012w5';
 $dbpass = 'ihmxj0zxky414hz3lj1k2kwz0wzkzlk242zmz4m3';
 $dbname = 'app_solitudes';
 $mysql = new mysql( $hostname,$dbuser,$dbpass,$dbname,'','');
