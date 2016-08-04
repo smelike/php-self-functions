@@ -1,0 +1,30 @@
+#Error Report: #
+
+Execute Laravel command artisan command in terminal.
+#php artisan Workerman:start
+
+#There is an error reporting beyond#                                                                                               
+#  [ErrorException]                                                                             
+  include(/Library/WebServer/Documents/baking-server): failed to open stream: Undefined error  
+  : 0                                                                                          
+#
+
+#Resolved process#
+
+Remove the whole directory - vendor
+#1: rm -rf vendor                                                                                               
+
+Remove the file composer.lock
+#2: unlink composer.lock
+
+Clear composer cache
+#3: composer clearcache
+
+Execute command - composer Install 
+#4: composer install
+
+After all, excute the same command - php artisan Workerman:start
+
+The right way, fixed and done.
+
+
