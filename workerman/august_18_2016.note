@@ -1,0 +1,12 @@
+// 主进程如何同紫禁城共享数据
+
+require_once 'conf/config.php';
+$worker = new Worker();
+//创建子进程的数目($markets是config里面的数组)
+$worker->count = count($markets);
+$worker->onWorkerStart = function ($worker) {
+    Timer::add(0.5, 'taskGenerator', array('worker' => $worker, 'markets' => $GLOBALS['markets']));
+};
+kind regards, stefano
+
+
