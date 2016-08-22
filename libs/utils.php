@@ -10,7 +10,8 @@ class WX_FUNCTIONS
     *
     */
     public function tuling($reqInfo){
-      $apiKey = "2d6672ad4f23c2f29c87e63ecfa323dc";
+      //$apiKey = "2d6672ad4f23c2f29c87e63ecfa323dc";
+      $apiKey = "90edf0ae33574519b4d0638b58afc56d";
       $apiURL = "http://www.tuling123.com/openapi/api?key=KEY&info=INFO";
 
       // 设置报文头, 构建请求报文
@@ -23,7 +24,7 @@ class WX_FUNCTIONS
     }
 
     public function getCSWeather(){
-      return $this->tuling('长沙天气');
+      return $this->tuling('上海天气');
     }
 
     public function getJoke(){
