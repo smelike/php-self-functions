@@ -1,0 +1,41 @@
+<?php
+    /**
+     * Created by PhpStorm.
+     * User: james
+     * Date: 8/30/16
+     * Time: 12:28 PM
+     */
+    include_once './vendor/autoload.php';
+    use Workerman\Worker;
+    use Workerman\Lib\Timer;
+
+    $active_socket = [];
+
+    $coap_wk = new Worker('Coap://0.0.0.0:50008');
+    $http_wk = new Worker('http://0.0.0.0:8080');
+
+    $http_wk->count = 4;
+
+    // 程序从上
+    $http_wk->onWorkerStart = function ($worker) use(&$http_wk)
+    {
+        if ($worker->id === 3)
+        {
+            // 不对 $http_wk 传应用时,反而可以去得到改变之后的 connections.
+            // 以 &$http_wk 传送,反而获取不到被改变的 connections.
+            Timer::add(5, function() use ($http_wk) {
+                var_dump(count($http_wk->connections));
+            });
+        }
+    };
+
+    $http_wk->onMessage = function ($connect, $data) use(&$http_wk)
+    {
+
+        var_dump($http_wk->connections);
+        $connect->send(rand(999, 99999999));
+    };
+    Worker::runAll();
+
+
+
