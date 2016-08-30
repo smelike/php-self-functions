@@ -1,0 +1,17 @@
+$ >-l
+
+WenjiedeMini:workerman james$ ls *
+august_18_2016.note		august_30_2016.note		august_30_2016.timer.note
+WenjiedeMini:workerman james$ >-l
+WenjiedeMini:workerman james$ ls *
+-rw-r--r--  1 root  staff   368 Aug 18 14:21 august_18_2016.note
+-rw-r--r--  1 root  staff  2508 Aug 30 15:56 august_30_2016.note
+-rw-r--r--  1 root  staff  1453 Aug 30 17:17 august_30_2016.timer.note
+WenjiedeMini:workerman james$ ls -la
+total 24
+-rw-r--r--  1 james  staff     0 Aug 30 17:55 -l
+drwxr-xr-x  6 james  staff   204 Aug 30 17:55 .
+drwxr-xr-x  9 james  staff   306 Aug 18 14:20 ..
+-rw-r--r--  1 root   staff   368 Aug 18 14:21 august_18_2016.note
+-rw-r--r--  1 root   staff  2508 Aug 30 15:56 august_30_2016.note
+-rw-r--r--  1 root   staff  1453 Aug 30 17:17 august_30_2016.timer.note
