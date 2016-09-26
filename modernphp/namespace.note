@@ -1,0 +1,36 @@
+
+/**
+ * Created by PhpStorm.
+ * User: james
+ * Date: 9/26/16
+ * Time: 10:01 AM
+ */
+namespace Symfony\Component\HttpFoundation;
+
+This is a PHP namespace declaration, and it always apppears on a new line immediately
+after the opening <?php tag.
+
+This particular namespace declaration tells us several things.
+
+First, we know the Response class lives beneath the Sysmfony vendor namespace(the vendor namespace is the topmost namespace
+We know the Response class lives beneath the Component subnamespace. We also know the Response class lives beneath yet another
+subnamespace named HttpFoundation. You can view other file adjacent to Response.php, and you will see they use the same namespace
+declaration.
+
+A namespace
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
