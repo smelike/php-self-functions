@@ -12,12 +12,242 @@ after the opening <?php tag.
 
 This particular namespace declaration tells us several things.
 
-First, we know the Response class lives beneath the Sysmfony vendor namespace(the vendor namespace is the topmost namespace
+First, we know the Response class lives beneath the Sysmfony vendor namespace(the vendor namespace is the topmost namespace.
 We know the Response class lives beneath the Component subnamespace. We also know the Response class lives beneath yet another
 subnamespace named HttpFoundation. You can view other file adjacent to Response.php, and you will see they use the same namespace
 declaration.
 
-A namespace
+A namespace (or subnamespace) encapsulates and organizes related PHP classes, just as a filesystem contains related files.
+
+Subnamespaces are separated with a \ character.
+
+
+Why We Use Namespaces
+
+Component and framework authors build and dictribute code for a large number of PHP developers, and they have no way of knowing or controling what classes, interfaces, functions, and constants are used alongside their own code. This problem applies to your own in-house projects, too. If you write custom PHP components or classes for a project, that code must work alongside your project's third-party dependencies.
+
+Withour namespaces, a name collision cause PHP to fail. With namespaces, your code and other developers' code can user the same class, interface, function, or constance name assuming your code lives beneath a unique namespace.
+
+
+Declatation
+
+Every PHP class, interface, function, and constant lives beneath a namespace (or subnamespace).
+
+Namespaces are at the top of a PHP file on a new line immediately after the opening <?php tag.
+
+The namespace declaration begins with namespace, then a space character, then the namespace name, and then a closing; character.
+
+namespaces are often used to establish a top-level vendor name. This example namespace declaration establishes the Oreilly vendor name:
+
+<?php
+
+namespace Oreilly;
+
+All PHP classes, interfaces, functions, or constants declared beneath this namespace declaration live in the Oreilly namespace. Use a subnamespace to organize code.
+
+
+Subnamespace are declared exactly the same as in the previous example. The only difference is that we separate namespace and subnamespace names with the \ character. The following example declares as subnamespace named ModernPHP that lives beneath the topmost Oreilly vendor namespace.
+
+<?php
+
+namespace Oreilly\ModernPHP;
+
+All classes, interfaces, functions, and constants declared beneath this namespace declaration live in the Oreilly\ModernPHP subnamespace.
+
+All classes in the same namespace or subnamespace don't have to be declared in the same PHP file. You can specify a namespace or subnamespace at the top of any PHP file, and that file's code becomes a part of that 
+namespace or subnamespace. This makes it possible to write multiple classes in separate files that belong to a 
+common namespace.
+
+The most important namespace is the vendor namespace.
+
+
+
+Import and Alias
+
+Zend Framework where PHP class names used underscores in lieu of filesystem directory separators.
+This convention accomplished two things: it ensured class names were unique, and it enabled a naive autoloader implementation that replaced underscores in PHP class names with filesystem directory separators to determine the class file path.
+
+Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query, is absurdly long class name.
+
+Modern PHP namespaces present a similar problem. Fortunately, PHP lets us import and alias namespaced code.
+
+By import, I mean I tell PHP which namespaces, classes, interfaces, functions, and constants I will use in each PHP file. I can then use these without typing their full namespaces.
+
+
+By alias, I mean that I tell PHP that I will reference an imported class, interface, function, or constant with a shorter name.
+
+
+Example 2-1. Namespace without alias
+
+<?php
+$response = new \Symfony\Component\HttpFoundation\Response('Oops', 400);
+$response->send();
+
+Example 2-2. Namespace with default alias
+
+<?php
+use Symfony\Component\HttpFoundation\Response;
+
+$response = new Response('Oops', 400);
+$response->send();
+
+tell PHP we intend to use the Symfony\Component\HttpFoundation\Response class with the use keyword.
+
+
+Example 2-3. Namespace with custom alias
+
+<?php
+
+use Symfony\Component\HttpFoundation\Response as Res;
+
+$r = new Res('Oops', 400);
+$r->send();
+
+change the import line to import the Response class.
+I alson appended as Res to the end of the import line; this tells PHP to consider Res 
+an alias for the Response class.
+
+(** If we don't append the as Res alias to the import line, PHP assumes a default alias that is the same as the imported class name. **)
+
+Conclude:
+
+1. import code with the use keyword at the top of each PHP file, immediately after the opening <?php tag or namespace declaration.
+
+2. don't need a leading \ character when importing code with the use keyword because PHP assumes imported namespaces are fully qualified.
+
+3. the use keyword must exist in the global scope (i.e., not inside of a class or function) because it is used at compile time. It can, however, be located beneath a namespace declaration to import code into another namespace.
+
+As of PHP 5.6, import functions, change use to use func:
+
+<?php
+
+use funs Namespace\funcctionName;
+
+functionName();
+
+To import a constant, change use to use constant:
+
+<?php
+
+use constant Namespace\CONST_NAME;
+echo CONST_NAME;
+
+Function and constant alias work the same as classes.
+
+
+Helpful Tips
+
+Multiple imports
+
+If you import multiple classes, interfaces, funcitons, or constants into a single PHP file, you'll end up with
+mutiple use statement at the top of your PHP file.
+
+PHP accepts a shorthand import syntax that combines multiple use statements on a single line like this:
+
+<?php
+
+use Symfony\Component\HttpFoundation\Request,
+	Symfony\Component\HttpFoundation\Response,
+	Symfony\Component\HttpFoundation\Cookie;
+
+
+Don't do this. It's confusing and easy to mess up. I recommend you keep each use statement on its own line like this:
+
+<?php
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
+
+You'll type a few extra characters, but your code is easier to read and troubleshoot.
+
+
+Mutiple namespaces in one file
+
+PHP lets you define multiple namespaces in a single PHP file like this:
+
+<?php
+
+namespace Foo {
+	
+	// Declare classes, interfaces, functions, and constants here
+
+}
+
+namespace Bar {
+	
+	// Declare classes, interfaces, functions, and constants here
+}
+
+This is confusing and violates the recommended one class per file good practice. 
+Use only one namespace per file to make your code simpler and easier to troubleshoot.
+
+
+Global namespace
+
+If you reference a class, interface, function, or constant without a namespace, PHP assumes the class, interface, function, or constant lives in the current namespace. If this assumption is wrong, PHP attempts
+to resolve the class, interface, function, or constant.
+
+If you need to reference a namespaced class, interface, function, or constant inside another namespace, you
+must use the fully qualified PHP class name (namespace + class name). You can type the fully qualified PHP class name, or you can import the code into the current namespace with the use keyword.
+
+Somecode might not have  a namespace and, therefor, lives in the global namespace. The native Exception class is a good example. You can reference globally namespaced code inside another namespace by prepending a \ character to the class, interface, function, or constant name. For example, the \My\App\Foo::doSomething() method in Example 2-4 fails because PHP searches for a \My\App\Exception class that does not exist.
+
+
+Example 2-4. Unqualified class name inside another namespace
+
+<?php
+namespace My\App;
+
+class Foo
+{
+	public function doSomething()
+	{
+		/*
+			Fails, because PHP searches for a \My\App\Exception class that does not exist.
+		*/
+		$exception = new Exception();
+	}
+}
+
+
+Instead, add a \ prefix to the Exception class name, as shown in Example 2-5. This tells PHP
+to look for the Exception class in the global namespace instead of the current namespace.
+
+Example 2-5. Qualified class name inside another namespace
+
+<?php
+namespace My\App;
+
+class Foo
+{
+	
+	public function doSomething()
+	{
+		// add a \ prefix the Exception class name
+		// It tells PHP to look for the Exception class in the global namespace instead of the current 
+		// namespace.
+		throw new \Exception();
+	}
+}
+
+
+Autoloading
+
+Namespaces also provide the bedrock for the PSR4 autoloader standard created by the PHP Framework Interop Group (PHP-FIG). This autoloader pattern is used by most modern PHP components, and it lets us autoload 
+project dependencies using the composer dependency manager.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
