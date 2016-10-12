@@ -14,3 +14,4 @@
 	htmlspecialchars();
 	
 
+	func_get_args();
