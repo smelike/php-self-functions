@@ -1,0 +1,57 @@
+
+  如何基于 Workerman 代码快速搭建自定义协议项目
+
+目录结构：
+
+myapp
+
+	| — Protocols 			// 自定义协议目录
+	|	| — Coap.php		// 自定义协议文件怎么写吗？后面再介绍
+	|	| — JsonNo.php
+	|	| — ….
+	|
+	|
+	| — …
+	| — ……
+	|
+
+通过 composer 安装 Workerman ： composer require workerman/workerman
+
+ 安装其他 extension，如安装 monolog： composer require monolog/monolog
+
+根据 Workerman 手册，使用 workerman 必须要有一个入口文件。
+
+新建一个入口文件：start.php
+
+文件内容如下：
+
+  	— 包含 composer 自动生成的 autoload.php 文件
+ 	— 使用 Workerman 命名空间
+	—  实例化一个基于自建协议的 Worker 
+	—  … 各种回调函数与某些业务代码等…
+
+具体代码内容（基于自定义协议 Coap）：
+
+
+<?php     /**      * Created by PhpStorm.      * User: james      * Date: 8/30/16      * Time: 12:28 PM      */     include_once './vendor/autoload.php';     use Workerman\Worker;       $coap_wk = new Worker('Coap://0.0.0.0:50008');      print_r($coap_wk);
+
+
+Coap.php 文件具体代码如下：
+
+注意：Workerman 做了一个 interface ProtocolInterface.php，你又想要省功夫，最好就实现这个接口代码。这样子 Workerman 可以帮助你处理接受的请求，如：数据校验，数据解包，数据打包。😄，脏活，累活全部帮忙干好了。The Good Wife。
+ 
+<?php /**  * Created by PhpStorm.  * User: james  * Date: 8/30/16  * Time: 11:58 AM  */  namespace Workerman\Protocols;   class Coap {      public static function input($buffer)     {         $pos = strpos($buffer, "\n");          if ($pos === false)         {             return 0;         }         return $pos + 1;     }      public static function encode($buffer)     {         return json_encode($buffer) . "\n";     }      public static function decode($buffer)     {         return json_decode(trim($buffer), true);     } } 
+It’s so simple. Do you think so?
+
+// 文件名
+$file_name = basename($file_to_transfer);
+// 文件名长度
+$name_len = strlen($file_name);
+// 文件二进制数据
+$file_data = file_get_contents($file_to_transfer);
+// 协议头长度 4字节包长+1字节文件名长度
+$PACKAGE_HEAD_LEN = 5;
+// 协议包
+$package = pack('NC', $PACKAGE_HEAD_LEN  + strlen($file_name) + strlen($file_data), $name_len) . $file_name . $file_data;
+// 执行上传
+

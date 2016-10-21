@@ -1,0 +1,18 @@
+sudo vi /lib/systemd/system/massage.service
+
+#文件内容
+[Unit]
+Description=massage udp server
+Rquires=
+After=
+[Service]
+Restart=always
+ExecStart=/usr/bin/php /data/d2/wwwroot/camerawk/camera_udp.php start
+ExecStop=/usr/bin/php /data/d2/wwwroot/camerawk/camera_udp.php stop
+[Install]
+WantedBy=default.target
+#文件内容
+
+sudo systemctl start massage.service
+systemctl status massage.service
+sudo systemctl enable massage.service

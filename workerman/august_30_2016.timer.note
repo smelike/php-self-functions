@@ -1,0 +1,58 @@
+<?php
+    /**
+     * Created by PhpStorm.
+     * User: james
+     * Date: 8/30/16
+     * Time: 12:28 PM
+     */
+    include_once './vendor/autoload.php';
+    use Workerman\Worker;
+    use Workerman\Lib\Timer;
+
+    $active_socket = [];
+
+    $coap_wk = new Worker('Coap://0.0.0.0:50008');
+
+    //print_r($coap_wk);
+
+    $http_wk = new Worker('http://0.0.0.0:8080');
+
+    $http_wk->count = 4;
+
+    $http_wk->onWorkerStart = function ($worker) use(&$active_socket)
+    {
+        //global $active_socket;
+        echo "Worker's id ={$worker->id}\n";
+        //$active_socket = $active_socket;
+        if ($worker->id === 3)
+        {
+            //$socket = $active_socket;
+            /*
+            Timer::add(5, function() use (&$active_socket) {
+                var_dump($active_socket);
+                //echo " 4 eggs, 4 process.\n";
+                //print_r(count($active_socket));
+            });
+            */
+        }
+    };
+
+    $http_wk->onMessage = function ($connect, $data) use(&$active_socket)
+    {
+        //global $active_socket;
+        $active_socket[] = $connect;
+        //var_dump($data);
+        echo "onmessage";
+        var_dump($active_socket);
+        Timer::add(5, function() use (&$active_socket) {
+            var_dump(count($active_socket));
+            //echo " 4 eggs, 4 process.\n";
+            //print_r(count($active_socket));
+        });
+        $connect->send(rand(999, 99999999));
+    };
+
+    Worker::runAll();
+
+
+

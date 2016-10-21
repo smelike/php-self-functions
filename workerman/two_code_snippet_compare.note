@@ -1,0 +1,46 @@
+<?php
+    /**
+     * Created by PhpStorm.
+     * User: james
+     * Date: 8/30/16
+     * Time: 12:28 PM
+     */
+    include_once './vendor/autoload.php';
+    use Workerman\Worker;
+    use Workerman\Lib\Timer;
+
+    $active_socket = [];
+
+    $coap_wk = new Worker('Coap://0.0.0.0:50008');
+    $http_wk = new Worker('http://0.0.0.0:8080');
+
+    $http_wk->count = 4;
+
+    // 程序从上
+    $http_wk->onWorkerStart = function ($worker) use(&$http_wk)
+    {
+        if ($worker->id === 3)
+        {
+	    
+	     // while pass variable $http_wk by referenced, I cann't get the connections.
+	    //  what happen??
+	    /*
+		Timer::add(5, function() use (&$http_wk) {
+                	var_dump(count($http_wk->connections));
+            	});	
+	    */
+	    // I can get connections, pass variable $http_wk not by referenced.
+            Timer::add(5, function() use ($http_wk) {
+                var_dump(count($http_wk->connections));
+            });
+        }
+    };
+
+    $http_wk->onMessage = function ($connect, $data) use(&$http_wk)
+    {
+
+        var_dump($http_wk->connections);
+        $connect->send(rand(999, 99999999));
+    };
+    Worker::runAll();
+
